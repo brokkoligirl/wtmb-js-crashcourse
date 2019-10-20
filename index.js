@@ -2,7 +2,7 @@
 A platform for FoodSnobs to make Reservations, visit & rate Restaurants 
 (on a scale of 1-10), attend FoodEvents (or cancel attendance), and tag 
 restaurants they've been to.
-Restaurants can approve or deny reservation requests, eventHost FoodEvents 
+Restaurants can approve or deny reservation requests, host FoodEvents 
 and invite their most loyal patrons to those events.
 
 The Rating, Reservation, and FoodEvent classes don't have methods as 
