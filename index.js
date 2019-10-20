@@ -268,7 +268,7 @@ karolin.cancelAttendance(lobsterParty)
 // doesn't work.
 
 /* Allan's really loves the people who give them good ratings:
-if you've rated them 8 or better, they want to automatically 
+if you've rated them better than an 8, they want to automatically 
 add you to their lobster party attendee list to save you a spot: */
 allans.inviteTopFans(lobsterParty)
 console.log("Lobster Party goers (final): ", lobsterParty.eventAttendees, "\n")
