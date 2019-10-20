@@ -2,7 +2,7 @@
 A platform for FoodSnobs to make Reservations, visit & rate Restaurants 
 (on a scale of 1-10), attend FoodEvents (or cancel attendance), and tag 
 restaurants they've been to.
-Restaurants can approve or deny reservation requests, host FoodEvents 
+Restaurants can approve or deny reservation requests, eventHost FoodEvents 
 and invite their most loyal patrons to those events.
 
 The Rating, Reservation, and FoodEvent classes don't have methods as 
@@ -21,11 +21,11 @@ Rating = class {
 }
 
 Reservation = class {
-  constructor(restaurant, patron, date, time, numberOfPeople) {
+  constructor(restaurant, patron, resDate, resTime, numberOfPeople) {
       this.restaurant = restaurant
       this.patron = patron
-      this.date = date
-      this.time = time
+      this.resDate = resDate
+      this.resTime = resTime
       this.numberOfPeople = numberOfPeople
       this.approved = false
       this.message = ""
@@ -33,12 +33,12 @@ Reservation = class {
 }
 
 FoodEvent = class {
-  constructor(name, host, date, maxAttendees) {
-      this.name = name
-      this.host = host
-      this.date = date
+  constructor(eventName, eventHost, eventDate, maxAttendees) {
+      this.eventName = eventName
+      this.eventHost = eventHost
+      this.eventDate = eventDate
       this.maxAttendees = maxAttendees 
-      this.attendees = []
+      this.eventAttendees = []
   }
 }
 
@@ -50,26 +50,26 @@ function arrayRemove(arr, value) {
 }
 
 FoodSnob = class {
-    constructor(name) {
-      this.name = name
+    constructor(snobName) {
+      this.snobName = snobName
       this.ratings = []
       this.eventsAttended = []
       this.reservations = []
     }
 
     // submit reservation request to restaurant
-    makeReservation(restaurant, date, time, numberOfPeople) {
-      var newReservation = new Reservation(restaurant, this, date, time, numberOfPeople)
+    makeReservation(restaurant, resDate, resTime, numberOfPeople) {
+      var newReservation = new Reservation(restaurant, this, resDate, resTime, numberOfPeople)
       restaurant.reservationRequests.push(newReservation)
       this.reservations.push(newReservation)
-      console.log(`your reservation request for ${restaurant.name} has been submitted.\n`)
+      console.log(`your reservation request for ${restaurant.restaurantName} has been submitted.\n`)
     }
 
     // upon each visit, a restaurant is rated (rating must be 1-10)
     visitRestaurant(restaurant, rating) {
         // check rating value
         if (typeof rating != "number" || rating < 1 || rating > 10) {
-            return console.log(`Try again ${this.name}. Your rating for ${restaurant.name}`, 
+            return console.log(`Try again ${this.snobName}. Your rating for ${restaurant.restaurantName}`, 
                                "needs to be a number between 1 and 10.\n");
         } else {
         // check if restaurant is already rated & update rating
@@ -89,6 +89,7 @@ FoodSnob = class {
             }
         }
     }
+
     // add tags to restaurant (i.e. "brunch", "pizza", "vegan")
     tagRestaurant(restaurant, newTags) {
         // only allow tagging by people who've been to the restaurant
@@ -102,38 +103,38 @@ FoodSnob = class {
             }
         } if (attended == false) {
             console.log("permission denied, you fool.",
-                        `Only people who have been to ${restaurant.name}`,
+                        `Only people who have been to ${restaurant.restaurantName}`,
                         "are allowed to add tags.\n")
         }
     }
 
     attend(event) {
-        if (event.attendees.length < event.maxAttendees) {
+        if (event.eventAttendees.length < event.maxAttendees) {
             this.eventsAttended.push(event)
-            event.attendees.push(this)
-            console.log(`Thank you, ${this.name}, for signing up for ${event.name}.\n`)
+            event.eventAttendees.push(this)
+            console.log(`Thank you, ${this.snobName}, for signing up for ${event.eventName}.\n`)
         } else {
-            console.log(`You're too late ${this.name}, ${event.name}`,
+            console.log(`You're too late ${this.snobName}, ${event.eventName}`,
                         "is already full. Are you even a real foodie?\n")
         }
     }
 
     cancelAttendance(event) {
-        if (event.attendees.includes(this)) {
-            event.attendees = arrayRemove(event.attendees, this)
+        if (event.eventAttendees.includes(this)) {
+            event.eventAttendees = arrayRemove(event.eventAttendees, this)
             this.eventsAttended = arrayRemove(this.eventsAttended, event)
-            console.log(`Sad to learn you can't attend ${event.name}, ${this.name}\n`)
+            console.log(`Sad to learn you can't attend ${event.eventName}, ${this.snobName}\n`)
 
         } else {
-            console.log(`${this.name}, you can't cancel on ${event.name}`,
+            console.log(`${this.snobName}, you can't cancel on ${event.eventName}`,
                         "because you're not signed up, duh.\n")
         }
     }
 } 
 
 Restaurant = class {
-    constructor(name) {
-      this.name = name
+    constructor(restaurantName) {
+      this.restaurantName = restaurantName
       this.tags = []
       this.ratings = []
       this.eventsHosted = []
@@ -156,7 +157,7 @@ Restaurant = class {
         requested.message = message
         this.approvedReservations.push(requested)
         this.reservationRequests.shift()
-        console.log(`rezzie at ${this.name} for ${requested.patron.name} has been approved.\n`)
+        console.log(`rezzie at ${this.restaurantName} for ${requested.patron.snobName} has been approved.\n`)
     }
     
     // delete first item in request list
@@ -164,21 +165,21 @@ Restaurant = class {
         var requested = this.reservationRequests[0]
         requested.message = message
         this.reservationRequests.shift()
-        console.log(`rezzie at ${this.name} for ${requested.patron.name}`,
+        console.log(`rezzie at ${this.restaurantName} for ${requested.patron.snobName}`,
                     `has been denied: "${message}".\n`)
     }
 
-    hostEvent(name, date, maxAttendees){
-        var newEvent = new FoodEvent(name, this, date, maxAttendees)
+    hostEvent(eventName, eventDate, maxAttendees){
+        var newEvent = new FoodEvent(eventName, this, eventDate, maxAttendees)
         this.eventsHosted.push(newEvent)
         return newEvent
     }
 
-    // automatically add people who rated the restaurant 8 or higher to an event
+    // automatically add people who rated the restaurant higher than 8 to an event
     inviteTopFans(event) {    
         for (let i=0; i<this.ratings.length; i++) {
             if (this.ratings[i].rating > 8) {
-                event.attendees.push(this.ratings[i].patron)
+                event.eventAttendees.push(this.ratings[i].patron)
             }
         }
     }
@@ -254,13 +255,13 @@ console.log("Events hosted by Allan's: ", allans.eventsHosted, "\n")
 // the snobs need to go, obvi:
 ronnie.attend(lobsterParty)
 david.attend(lobsterParty)
-console.log("Lobster party-goers after first sign up: ", lobsterParty.attendees, "\n")
+console.log("Lobster party-goers after first sign up: ", lobsterParty.eventAttendees, "\n")
 
 // turns out, Ronnie can't make it to Lobster Roll night after all:
 ronnie.cancelAttendance(lobsterParty)
 console.log("David's events: ", david.eventsAttended, "\n")
 console.log("Ronnie's events: ", ronnie.eventsAttended, "\n")
-console.log("Lobster party-goers after cancellation: ", lobsterParty.attendees, "\n")
+console.log("Lobster party-goers after cancellation: ", lobsterParty.eventAttendees, "\n")
 
 // this one's cancelling even though she never signed up:
 karolin.cancelAttendance(lobsterParty)
@@ -270,12 +271,12 @@ karolin.cancelAttendance(lobsterParty)
 if you've rated them 8 or better, they want to automatically 
 add you to their lobster party attendee list to save you a spot: */
 allans.inviteTopFans(lobsterParty)
-console.log("Lobster Party goers (final): ", lobsterParty.attendees, "\n")
+console.log("Lobster Party goers (final): ", lobsterParty.eventAttendees, "\n")
 
 // trying to attend an event that is full:
 var wineTasting = bricole.hostEvent("Natural Wine Tasting", "November 2nd, 2019", 2)
 karolin.attend(wineTasting)
 david.attend(wineTasting)
-console.log("Attendees for wine tasting:", wineTasting.attendees, 
+console.log("Attendees for wine tasting:", wineTasting.eventAttendees, 
             "\nMax Attendees:", wineTasting.maxAttendees, "\n")
 ronnie.attend(wineTasting)
