@@ -71,23 +71,22 @@ FoodSnob = class {
         if (typeof rating != "number" || rating < 1 || rating > 10) {
             return console.log(`Try again ${this.snobName}. Your rating for ${restaurant.restaurantName}`, 
                                "needs to be a number between 1 and 10.\n");
-        } else {
+        }
         // check if restaurant is already rated & update rating
-            var found = false
-            for (let i = 0; i<this.ratings.length; i++){
-                if (this.ratings[i].restaurant == restaurant){
-                    this.ratings[i].rating = rating
-                    this.ratings[i].visits += 1
-                    found = true
+        var found = false
+        for (let i = 0; i<this.ratings.length; i++){
+            if (this.ratings[i].restaurant == restaurant){
+                this.ratings[i].rating = rating
+                this.ratings[i].visits += 1
+                found = true
                 }
             }
-            // create new rating for new restaurant
-            if (found == false) {
-                var newRating = new Rating(restaurant, this, rating)
-                restaurant.ratings.push(newRating)
-                this.ratings.push(newRating)
-            }
-        }
+        // create new rating for new restaurant
+        if (found == false) {
+            var newRating = new Rating(restaurant, this, rating)
+            restaurant.ratings.push(newRating)
+            this.ratings.push(newRating)
+            }   
     }
 
     // add tags to restaurant (i.e. "brunch", "pizza", "vegan")
@@ -97,8 +96,8 @@ FoodSnob = class {
         for (let i=0; i<restaurant.ratings.length; i++){
             if (restaurant.ratings[i].patron == this) {
                 attended = true
-                for (let i=0; i<newTags.length; i++) {
-                    restaurant.tags.push(newTags[i])
+                for (let j=0; j<newTags.length; j++) {
+                    restaurant.tags.push(newTags[j])
                 }
             }
         } if (attended == false) {
@@ -145,9 +144,12 @@ Restaurant = class {
     // display average (mean) rating for this restaurant
     getAvgRating() {
         var ratingSum = 0
-        for (let i=0; i<this.ratings.length; i++)  {
-            ratingSum += this.ratings[i].rating
-        } return ratingSum / this.ratings.length
+        this.ratings.forEach(mySum)
+
+        function mySum(item) {
+            ratingSum += item.rating;
+        }
+        return ratingSum / this.ratings.length
     }
 
     // approve first item in request list, move to approved list, and delete
