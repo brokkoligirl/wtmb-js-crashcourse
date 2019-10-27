@@ -1,0 +1,24 @@
+{
+  "name": "foodsnob",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brokkoligirl/wtmb-js-crashcourse.git"
+  },
+  "author": "Karolin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/brokkoligirl/wtmb-js-crashcourse/issues"
+  },
+  "homepage": "https://github.com/brokkoligirl/wtmb-js-crashcourse#readme",
+  "dependencies": {
+    "flatted": "^2.0.1",
+    "ics": "^2.18.0",
+    "moment": "^2.24.0"
+  }
+}
