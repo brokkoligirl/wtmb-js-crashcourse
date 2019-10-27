@@ -19,7 +19,7 @@ module.exports = class FoodSnob {
         let newReservation = new Reservation(restaurant, this, resDate, resTime, numberOfPeople);
         restaurant.reservationRequests.push(newReservation);
         this.reservations.push(newReservation);
-        console.log(`your reservation request for ${restaurant.restaurantName} has been submitted.\n`);
+        console.log(`Thank you ${this.snobName}, your reservation request for ${restaurant.restaurantName} has been submitted.\n`);
     }
 
     // upon each visit, a restaurant is rated (rating must be 1-10)
@@ -84,12 +84,13 @@ module.exports = class FoodSnob {
         }
     }
 
+    // generates .ics file for approved reservations at restaurantName
     exportReservationCalFile(restaurantName, desc="", duration=120) {
         let reservationFound = false;
         for (let i=0; i < this.reservations.length; i++) {
             if ((this.reservations[i].restaurant.restaurantName == restaurantName) && (this.reservations[i].approved === true)) {
                 reservationFound = true;
-                const rezzie = this.reservations[i];
+                let rezzie = this.reservations[i];
                 let t = new moment(`${rezzie.resDate} ${rezzie.resTime}`, "YYYY-MM-DD HH:mm");
 
                 ics.createEvent({

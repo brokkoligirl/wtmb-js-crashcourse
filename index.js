@@ -59,10 +59,10 @@ allans.inviteTopFans(lobsterParty)
 console.log("Lobster Party goers: ", lobsterParty.eventAttendees, "\n")
 
 // trying to attend an event that is full:
-// const wineTasting = bricole.hostEvent("Natural Wine Tasting", "November 2nd, 2019", 2)
-// karolin.attend(wineTasting)
-// david.attend(wineTasting)
-// ronnie.attend(wineTasting)
+const wineTasting = bricole.hostEvent("Natural Wine Tasting", "November 2nd, 2019", 2)
+karolin.attend(wineTasting)
+david.attend(wineTasting)
+ronnie.attend(wineTasting)
 
 // saving 
 database.save('./exports/foodsnobs.json', [karolin, ronnie, david])
