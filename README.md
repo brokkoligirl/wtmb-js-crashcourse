@@ -4,6 +4,7 @@
 
 A platform for food snobs to 
 <ul><li>make Reservations, </li>
+<li>create ics files for approved reservations,</li>
 <li>visit & rate Restaurants 
 (on a scale of 1-10),</li>
 <li>attend FoodEvents (or cancel attendance),</li> 
