@@ -82,3 +82,5 @@ function myfunc(item) {
 david.makeReservation(gazzo, "2020-01-03", "20:00", 3)
 gazzo.approveReservation("a table will be ready for you")
 david.exportReservationCalFile(gazzo.restaurantName)
+
+ronnie.makeReservation(bricole, "19-02-2020", "20:00", 2)

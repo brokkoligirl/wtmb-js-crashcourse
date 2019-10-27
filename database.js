@@ -1,5 +1,5 @@
 const fs = require('fs')
-const Flatted = require('flatted') // https://www.npmjs.com/package/flatted
+const Flatted = require('flatted')
 
 const save = function(filepath, data) {
     

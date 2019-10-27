@@ -16,10 +16,16 @@ module.exports = class FoodSnob {
 
     // submit reservation request to restaurant
     makeReservation(restaurant, resDate, resTime, numberOfPeople) {
-        let newReservation = new Reservation(restaurant, this, resDate, resTime, numberOfPeople);
-        restaurant.reservationRequests.push(newReservation);
-        this.reservations.push(newReservation);
-        console.log(`Thank you ${this.snobName}, your reservation request for ${restaurant.restaurantName} has been submitted.\n`);
+        // check if date input is valid
+        if ((moment(resDate, "YYYY-MM-DD", true).isValid()) && (moment(resTime, "HH:mm", true).isValid())) {
+            let newReservation = new Reservation(restaurant, this, resDate, resTime, numberOfPeople);
+            restaurant.reservationRequests.push(newReservation);
+            this.reservations.push(newReservation);
+            console.log(`Thank you ${this.snobName}, your reservation request for ${restaurant.restaurantName} has been submitted.\n`);
+        }
+        else {
+            console.log("invalid input:\nresDate format must be 'YYYY-MM-DD', \nresTime format must be 'HH:mm'")
+        }
     }
 
     // upon each visit, a restaurant is rated (rating must be 1-10)
