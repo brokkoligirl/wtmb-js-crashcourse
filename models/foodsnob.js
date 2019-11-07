@@ -7,11 +7,12 @@ const moment = require('moment')
 
 
 module.exports = class FoodSnob {
-    constructor(snobName) {
+    constructor(snobName, ratings = [], eventsAttended = [], reservations = [], id) {
         this.snobName = snobName;
-        this.ratings = [];
-        this.eventsAttended = [];
-        this.reservations = [];
+        this.ratings = ratings;
+        this.eventsAttended = eventsAttended;
+        this.reservations = reservations;
+        this.id = id;
     }
 
     // submit reservation request to restaurant
@@ -121,4 +122,8 @@ module.exports = class FoodSnob {
                 console.log(`no confirmed reservation for ${restaurantName} found.`)
             }           
         }
+
+    static create({ snobName, ratings, eventsAttended, reservations, id }) {
+        return new FoodSnob(snobName, ratings, eventsAttended, reservations, id)
+    }
 }

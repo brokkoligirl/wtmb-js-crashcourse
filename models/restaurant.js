@@ -1,13 +1,15 @@
 const FoodEvent = require('./foodevent')
 
 module.exports = class Restaurant {
-    constructor(restaurantName) {
+    constructor(restaurantName, tags = [], ratings = [], eventsHosted = [], 
+                reservationRequests = [], approvedReservations = [], id) {
         this.restaurantName = restaurantName;
-        this.tags = [];
-        this.ratings = [];
-        this.eventsHosted = [];
-        this.reservationRequests = [];
-        this.approvedReservations = [];
+        this.tags = tags;
+        this.ratings = ratings;
+        this.eventsHosted = eventsHosted;
+        this.reservationRequests = reservationRequests;
+        this.approvedReservations = approvedReservations;
+        this.id = id;
     }
     // display average (mean) rating for this restaurant
     getAvgRating() {
@@ -46,5 +48,11 @@ module.exports = class Restaurant {
                 event.eventAttendees.push(this.ratings[i].patron);
             }
         }
+    }
+
+    static create({ restaurantName, tags, ratings, eventsHosted, 
+        reservationRequests, approvedReservations, id }) {
+        return new Restaurant(restaurantName, tags, ratings, eventsHosted, 
+            reservationRequests, approvedReservations, id);
     }
 }

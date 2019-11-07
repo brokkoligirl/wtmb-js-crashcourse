@@ -1,4 +1,6 @@
 .DS_Store
+.vscode/
 test.js
 node_modules/
 *.ics
+exports/
