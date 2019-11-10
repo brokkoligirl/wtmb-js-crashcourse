@@ -7,11 +7,34 @@ block content
         h4 This is everyone:
         ol
         each person in people 
-            li: a.list(href=`/foodsnobs/${person.id}`) #{person.snobName}, id: #{person.id} 
-    
+            li: a.list(href=`/users/${person.id}`) #{person.snobName}, id: #{person.id} 
+
+        hr
+
+        h4 create new user 
+        form(action="/users/submit-user", method="post")
+            label name
+            div: input(id="user_field" type="text" name="snobName")
+
+            input(type="submit", value="create user")
+
+
     else
         h2 Details for #{person.snobName}
+        p (id: #{person.id})
         h4 These are their ratings:
         ul
         each rating in person.ratings
             li: a.list(href=`/restaurants/${rating.restaurant.id}`) #{rating.restaurant.restaurantName}: #{rating.rating}
+        hr
+
+        h4 submit new rating 
+        form(action="submit-visit", method="post")
+            label restaurant id
+            div: input(id="restaurant_field" type="number" name="restaurantID")
+            label rating
+            div: input(id="rating_field" type="number" name="rating")
+            label snob id
+            div: input(id="snobID_field" type="number" name="snobID")
+
+            input(type="submit", value="submit rating")

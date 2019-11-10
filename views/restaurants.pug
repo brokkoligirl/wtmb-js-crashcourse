@@ -8,6 +8,14 @@ block content
         ol
         each resto in restaurants 
             li: a.list(href=`/restaurants/${resto.id}`) #{resto.restaurantName}, id: #{resto.id} 
+        hr
+
+        h4 submit new restaurant 
+        form(action="submit-restaurant", method="post")
+            label name
+            div: input(id="restaurant_field" type="text" name="restaurantName")
+
+            input(type="submit", value="submit restaurant")
     
     else
         h2 Details for #{restaurant.restaurantName}

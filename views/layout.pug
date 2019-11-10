@@ -4,7 +4,7 @@ html
     link(rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css")
     link(href="https://fonts.googleapis.com/css?family=Fredericka+the+Great|Oswald:300&display=swap" rel="stylesheet" type="text/css")
     link(href="https://fonts.googleapis.com/css?family=Armata&display=swap" rel="stylesheet" type="text/css")
-    link(rel="stylesheet" type="text/css" href="/css/style.css")
+    link(rel="stylesheet" type="text/css" href="/stylesheets/style.css")
 
     title FoodSnob
     script(src="https://unpkg.com/axios/dist/axios.min.js")
@@ -17,10 +17,10 @@ html
   body
     .page-container
       header
-          h1: a(href="/") eat that brunch
+          h1: a(href="/") let's eat
       .sidebar
-        a.button(href="/" class=(name === "index" ? "active" : undefined)) Home
-        a.button(href="/foodsnobs") FoodSnobs
+        a.button(href="/") Home
+        a.button(href="/users") FoodSnobs
         a.button(href="/restaurants") Restaurants
       .content-container
         block content
