@@ -1,0 +1,17 @@
+extends layout
+
+
+block content
+    if people
+        h2 All foodsnobs
+        h4 This is everyone:
+        ol
+        each person in people 
+            li: a.list(href=`/foodsnobs/${person.id}`) #{person.snobName}, id: #{person.id} 
+    
+    else
+        h2 Details for #{person.snobName}
+        h4 These are their ratings:
+        ul
+        each rating in person.ratings
+            li: a.list(href=`/restaurants/${rating.restaurant.id}`) #{rating.restaurant.restaurantName}: #{rating.rating}

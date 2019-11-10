@@ -1,0 +1,17 @@
+extends layout
+
+block content
+    
+    if restaurants
+        h2 All restaurants
+        h4 Where y'all are eating:        
+        ol
+        each resto in restaurants 
+            li: a.list(href=`/restaurants/${resto.id}`) #{resto.restaurantName}, id: #{resto.id} 
+    
+    else
+        h2 Details for #{restaurant.restaurantName}
+        p Ratings:
+        ul
+        each rating in restaurant.ratings
+            li #{rating.rating}/10 from #{rating.patron.snobName}
