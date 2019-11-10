@@ -7,7 +7,6 @@ module.exports = class Service {
     this.dbPath = dbPath
   }
 
-
   async findAll() {
     return new Promise((resolve, reject) => {
       fs.readFile(this.dbPath, 'utf8', async (err, file) => {
@@ -56,9 +55,9 @@ module.exports = class Service {
     return allItems.find(p => p.id == itemId)
   }
 
-  async update(newItem, id) {
+  async update(newItem, itemID) {
     const allItems = await this.findAll()
-    const i = allItems.findIndex((it) => it.id == id)
+    const i = allItems.findIndex((it) => it.id == itemID)
     allItems[i] = newItem;
     await this.saveAll(allItems);
   }
