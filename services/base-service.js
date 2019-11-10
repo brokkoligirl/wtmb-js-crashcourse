@@ -56,6 +56,13 @@ module.exports = class Service {
     return allItems.find(p => p.id == itemId)
   }
 
+  async update(newItem, id) {
+    const allItems = await this.findAll()
+    const i = allItems.findIndex((it) => it.id == id)
+    allItems[i] = newItem;
+    await this.saveAll(allItems);
+  }
+
   async saveAll(items) {
     return new Promise((resolve, reject) => {
       fs.writeFile(this.dbPath, Flatted.stringify(items), (err, file) => {
