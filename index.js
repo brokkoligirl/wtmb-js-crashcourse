@@ -1,55 +1,84 @@
-const FoodSnob = require('./models/foodsnob')
-const Restaurant = require('./models/restaurant')
+
+const express = require('express')
+const bodyParser = require('body-parser')
 const FoodSnobService = require('./services/foodsnob-service')
 const RestaurantService = require('./services/restaurant-service')
 
-console.log("whaddup")
+const app = express()
+const port = 3000
 
-async function main() {
+app.use(bodyParser.json())
+app.use(express.static(`public`));
+app.set('view engine', 'pug')
 
-    const allans = new Restaurant("Allan's Breakfast Club")
-    const bricole = new Restaurant("Bricole")
-    const gazzo = new Restaurant("Gazzo Pizza")
+app.get('/', (req, res) => {
+  res.render('index')
+})
 
-    const karolin = new FoodSnob("Karolin")
-    const ronnie = new FoodSnob("Ronnie")
-    const david = new FoodSnob("David")
+// foodsnob functionality
+app.get('/foodsnobs', async (req, res) => {
+  const people = await FoodSnobService.findAll()
+  res.render('foodsnobs', { people: people })
+})
 
-    karolin.makeReservation(allans, "2019-10-22", "10:00", 2) 
-    karolin.makeReservation(gazzo, "2019-10-22", "20:00", 5)
+app.get('/foodsnobs/:id', async (req, res) => {
+  const id = req.params.id
+  const person = await FoodSnobService.find(id)
+  res.render('foodsnobs', { person: person })
+})
 
-    allans.approveReservation("looking forward to see u")
-    gazzo.denyReservation("sorry y'all, we're already fully booked 2nite.")
+app.post('/foodsnob', async (req, res) => {
+  const person = await FoodSnobService.add(req.body)
+  res.send(person)
+})
 
-    karolin.visitRestaurant(allans, 8)
-    ronnie.visitRestaurant(allans, 5)
-    karolin.visitRestaurant(allans, 9)
-    ronnie.visitRestaurant(gazzo, 4)
-    karolin.visitRestaurant(gazzo, 7)
+app.delete('/foodsnobs/:id', async (req, res) => {
+  const person = await FoodSnobService.del(req.params.id)
+  res.send('ok')
+})
 
-    // generating an ics file of the reservation at certain restaurant
-    david.makeReservation(gazzo, "2020-01-03", "20:00", 3)
-    gazzo.approveReservation("a table will be ready for you")
-    david.exportReservationCalFile(gazzo.restaurantName)
+// visit & rate restaurant, update database
+app.post('/visit/:restaurant/:rating/:foodsnob', async (req, res) => {
+    console.log(req.body)
+    const restaurantID = req.params.restaurant
+    const rating = parseInt(req.params.rating)
+    const foodSnobID = req.params.foodsnob
 
-    await FoodSnobService.add(karolin)
-    await FoodSnobService.add(david)
-    await FoodSnobService.add(ronnie)
+    const restaurant = await RestaurantService.find(restaurantID)
+    const foodSnob = await FoodSnobService.find(foodSnobID)
+    foodSnob.visitRestaurant(restaurant, rating)
 
-    await RestaurantService.add(gazzo)
-    await RestaurantService.add(allans)
+    RestaurantService.update(restaurant, restaurantID);
+    FoodSnobService.update(foodSnob, foodSnobID);
 
-    const people = await FoodSnobService.findAll()
-
-    console.log(people)
-
-    await FoodSnobService.del(1)
-
-    const newPeople = await FoodSnobService.findAll()
-    
-    console.log(newPeople[0].snobName)
-}
+    res.send('ok')
+})
 
 
-main()
+// restaurant functionality
+app.get('/restaurants', async (req, res) => {
+    const restaurants = await RestaurantService.findAll()
+    res.render('restaurants', { restaurants: restaurants }) 
 
+})
+
+app.get('/restaurants/:id', async (req, res) => {
+    const id = req.params.id
+    const restaurant = await RestaurantService.find(id)
+    res.render('restaurants', { restaurant: restaurant })
+})
+
+app.post('/restaurant', async (req, res) => {
+    const restaurant = await RestaurantService.add(req.body)
+    res.send(restaurant)
+  })
+  
+  app.delete('/restaurants/:id', async (req, res) => {
+    const restaurant = await RestaurantService.del(req.params.id)
+    res.send('ok')
+  })
+
+
+app.listen(port, () => {
+  console.log('server listening')
+})
