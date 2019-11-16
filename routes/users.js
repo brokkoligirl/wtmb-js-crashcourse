@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const FoodSnobService = require('../services/foodsnob-service')
 const RestaurantService = require('../services/restaurant-service')
+const RatingService = require('../services/rating-service')
 
 /* GET users listing. */
 router.get('/', async (req, res, next) => {
@@ -15,28 +16,26 @@ router.get('/:id', async (req, res) => {
     res.render('foodsnobs', { person: person })
   })
 
-router.post('/submit-user', async (req, res) => {
-    await FoodSnobService.add(req.body)
-    res.send('ok')
+router.post('/submit', async (req, res) => {
+    const user = await FoodSnobService.add(req.body)
+    res.send(user)
   })
 
-router.post('/submit-visit', async (req, res) => {
+router.post('/:id/submit-visit', async (req, res) => {
     console.log(req.body)
     const restaurantID = req.body.restaurantID
     const rating = parseInt(req.body.rating)
-    const foodSnobID = req.body.snobID
+    const foodSnobID = req.params.id
 
     const restaurant = await RestaurantService.find(restaurantID)
     const foodSnob = await FoodSnobService.find(foodSnobID)
-    foodSnob.visitRestaurant(restaurant, rating)
-  
-    RestaurantService.update(restaurant, restaurantID);
-    FoodSnobService.update(foodSnob, foodSnobID);
+
+    RatingService.rateRestaurant(foodSnob, restaurant, rating)
     
-    res.send('done')
+    res.send(foodSnob)
   })
 
-router.delete('/del/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     await FoodSnobService.del(req.params.id)
     res.send('ok')
   })

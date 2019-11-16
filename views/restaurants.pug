@@ -7,19 +7,32 @@ block content
         h4 Where y'all are eating:        
         ol
         each resto in restaurants 
-            li: a.list(href=`/restaurants/${resto.id}`) #{resto.restaurantName}, id: #{resto.id} 
+            li: a.list(href=`/restaurants/${resto.id}`) #{resto.name}, id: #{resto.id}
+            
         hr
 
         h4 submit new restaurant 
-        form(action="submit-restaurant", method="post")
+        form(action="/restaurants/submit", method="post")
             label name
-            div: input(id="restaurant_field" type="text" name="restaurantName")
+            div: input(id="restaurant_field" type="text" name="name")
 
-            input(type="submit", value="submit restaurant")
+            input(type="submit", value="create restaurant")
     
     else
-        h2 Details for #{restaurant.restaurantName}
+        h2 Details for #{restaurant.name}
+        h5 Average Rating: #{avgRating}
         p Ratings:
         ul
         each rating in restaurant.ratings
-            li #{rating.rating}/10 from #{rating.patron.snobName}
+            li #{rating.rating}/10 from #{rating.patron.name}
+        hr
+        p Tags: 
+        each tag in restaurant.tags
+            li #{tag}
+        hr
+        h4 tag restaurant 
+        form(action=`/restaurants/${restaurant._id}/tag`, method="post")
+            label tags
+            div: input(id="restaurant_field" type="text" name="tags")
+
+            input(type="submit", value="tag restaurant")

@@ -1,11 +1,26 @@
-module.exports = class Reservation {
-    constructor(restaurant, patron, resDate, resTime, numberOfPeople) {
-        this.restaurant = restaurant;
-        this.patron = patron;
-        this.resDate = resDate;
-        this.resTime = resTime;
-        this.numberOfPeople = numberOfPeople;
-        this.approved = false;
-        this.message = "";
+
+const mongoose = require('mongoose')
+
+const ReservationSchema = new mongoose.Schema({
+    restaurant : {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'Restaurant',
+    },
+    patron : {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'FoodSnob',
+    },
+    date: {
+        type: Date,
+        min: Date.now        
+    },
+    partySize: {
+        type: Number,
+        min: 1,
+        max: 10,
     }
-}
+})
+
+const ReservationModel = new mongoose.model('Reservation', ReservationSchema)
+
+module.exports = ReservationModel
