@@ -26,11 +26,18 @@ block content
         each rating in restaurant.ratings
             li #{rating.rating}/10 from #{rating.patron.name}
         hr
-        p Tags: 
+        h5 Tags: 
         each tag in restaurant.tags
             li #{tag}
         hr
-        h4 tag restaurant 
+        if restaurant.location
+            #mapid
+                script(src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js" integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og==" crossorigin="")                
+                script(type='text/javascript')   
+                    | const restaurant = !{JSON.stringify(restaurant.location)}
+                script(src="/javascripts/restaurant-map.js")
+            hr
+        h5 tag restaurant 
         form(action=`/restaurants/${restaurant._id}/tag`, method="post")
             label tags
             div: input(id="restaurant_field" type="text" name="tags")
