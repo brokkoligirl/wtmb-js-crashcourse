@@ -20,7 +20,10 @@ const FoodSnobSchema = new mongoose.Schema({
     }],
     reservations: [{
         type: mongoose.SchemaTypes.ObjectId,
-        ref: 'Reservation', 
+        ref: 'Reservation',
+        autopopulate: {
+            maxDepth: 2
+        }
     }]
 })
 
