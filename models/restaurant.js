@@ -1,11 +1,13 @@
 const mongoose = require('mongoose')
-const RatingModel = require('./rating')
 
 const RestaurantSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
         minlength: 2,
+    },
+    location: {
+        type: Object,
     },
     tags: [{
         type: String,
@@ -27,22 +29,12 @@ const RestaurantSchema = new mongoose.Schema({
     }]
 })
 
-RestaurantSchema.methods.getAvgRating = function() {
-
-    let ratingSum = 0;
-    const ratings = RatingModel.find({ 
-        restaurant: '5dd06590c2733885c7dea048' 
-    });
-    function mySum(item) {
-        ratingSum += item.rating;
-    }
-    let counter = 0
+RestaurantSchema.methods.getAvgRating = function(cb) {
     let sum = 0
-    for (let r of ratings) {
+    for (let r of this.ratings) {
         sum += r.rating
-        counter += 1
     }
-    return sum / counter
+    return sum / this.ratings.length
 }
 
 

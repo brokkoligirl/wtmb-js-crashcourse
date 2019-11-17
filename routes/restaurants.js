@@ -13,8 +13,13 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     const id = req.params.id
     const restaurant = await RestaurantService.find(id)
-    const avgRating = await RestaurantService.getAvgRating(restaurant)
-    res.render('restaurants', { restaurant: restaurant, avgRating: avgRating })
+    const avgRating = await restaurant.getAvgRating()
+    // await RestaurantService.getRestaurantCoords(restaurant)
+    
+    res.render('restaurants', { 
+      restaurant: restaurant, 
+      avgRating: avgRating, 
+    })
 })
 
 router.post('/submit', async (req, res) => {
