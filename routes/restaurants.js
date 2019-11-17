@@ -22,9 +22,11 @@ router.get('/:id', async (req, res) => {
     })
 })
 
+// add new restaurant
 router.post('/submit', async (req, res) => {
+    await RestaurantService.getRestaurantCoords(req.body)
     await RestaurantService.add(req.body)
-    res.send('ok')
+    res.send(req.body)
   })
 
 router.post('/:id/tag', async (req, res) => {
