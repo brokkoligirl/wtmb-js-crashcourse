@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const RestaurantService = require('../services/restaurant-service')
-const RatingService = require('../services/rating-service')
-
 
 // restaurant endpoints
 router.get('/', async (req, res) => {
@@ -14,8 +12,7 @@ router.get('/:id', async (req, res) => {
     const id = req.params.id
     const restaurant = await RestaurantService.find(id)
     const avgRating = await restaurant.getAvgRating()
-    // await RestaurantService.getRestaurantCoords(restaurant)
-    
+
     res.render('restaurants', { 
       restaurant: restaurant, 
       avgRating: avgRating, 
