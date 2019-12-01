@@ -12,6 +12,11 @@ router.get('/', async (req, res, next) => {
   res.render('foodsnobs', { people: people })
 })
 
+router.get('/json', async (req, res) => {
+  const people = await FoodSnobService.findAll()
+  res.send(people) 
+})
+
 router.get('/:id', async (req, res) => {
   const id = req.params.id
   const person = await FoodSnobService.find(id)
