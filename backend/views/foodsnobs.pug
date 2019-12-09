@@ -1,0 +1,55 @@
+extends layout
+
+
+block content
+    if people
+        h2 All foodsnobs
+        h4 This is everyone:
+        ol
+        each person in people 
+            li: a.list(href=`/users/${person.id}`) #{person.name}, id: #{person.id} 
+
+        hr
+
+        h4 create new user 
+        form(action="/users/new", method="post")
+            label name
+            div: input(id="user_field" type="text" name="name")
+
+            input(type="submit", value="create user")
+
+
+    else
+        h2 Details for #{person.name}
+        p (id: #{person._id})
+        h4 These are their ratings:
+        ul
+        each rating in person.ratings
+            li: a.list(href=`/restaurants/${rating.restaurant.id}`) #{rating.rating}/10 for #{rating.restaurant.name} (visits: #{rating.visits})
+        hr
+        h4 These are their rezzies:
+        ul
+        each reservation in person.reservations
+            li: a.list(href=`/restaurants/${reservation.restaurant.id}`) #{reservation.date}, #{reservation.restaurant.name}
+        hr
+
+        h4 submit new rating 
+        form(action=`/users/${person._id}/ratings`, method="post")
+            label restaurant id
+            div: input(id="restaurant_field" type="string" name="restaurantID" required)
+            label rating
+            div: input(id="rating_field" type="number" name="rating" required)
+
+            input(type="submit", value="submit rating")
+
+        h4 save new rezzie 
+        form(action=`/users/${person._id}/reservations`, method="post")
+            label restaurant id
+            div: input(id="restaurant_field" type="string" name="restaurantID" required)
+            label date
+            div: input(id="date_field" type="date" name="date" required)
+            label time
+            div: input(id="time_field" type="time" name="time" required)
+            label party size
+            div: input(id="time_field" type="number" name="partySize" required)
+            input(type="submit", value="save rezzie")
