@@ -1,45 +1,55 @@
 <script>
 // @ is an alias to /src
+import TaggingForm from '@/components/tagging-form.vue'
+import RestaurantMap from '@/components/restaurant-map.vue'
 import { mapState, mapActions } from 'vuex'
 
 export default {
   name: 'restaurant',
+  components: {
+    TaggingForm,
+    RestaurantMap
+  },
   computed: {
-    ...mapState(['restaurant'])
+    ...mapState(['resto'])
   },
   methods: {
     ...mapActions(['fetchRestaurant'])
   },
   created() {
     this.fetchRestaurant(this.$route.params.id)
+    console.log(this)
   }
 }
 </script>
 
 <template lang="pug">
   main
-    h1 Details for {{restaurant.restaurant.name}}    
-    h5 Average Rating: {{restaurant.avgRating}}
-    p {{restaurant.restaurant._id}}  
-    h4 Ratings:
+    h1 Details for {{resto.restaurant.name}}  
+    p.rest-id id: {{resto.restaurant._id}}   
+    h5 Average Rating: {{resto.avgRating}}
+     
+    h5(v-if="resto.restaurant.ratings.length != 0") Ratings:
     ul
-        li(v-for="rating in restaurant.restaurant.ratings") {{rating.rating}}/10 from {{rating.patron.name}}   
-    hr
-    h4 Tags: 
+        li(v-for="rating in resto.restaurant.ratings") {{rating.rating}}/10 from {{rating.patron.name}}   
+    
+    h5(v-if="resto.restaurant.tags != 0") Tags: 
     ul
-        li(v-for="tag in restaurant.restaurant.tags") {{tag}}   
+        li(v-for="tag in resto.restaurant.tags") {{tag}}   
     hr
-    //- #mapid
-    //-     script(src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js" integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og==" crossorigin="")                
-    //-     script(type='text/javascript')   
-    //-         | const restaurant = !{JSON.stringify(restaurant.restaurant.location)}
-    //-     script(src="./public/javascripts/restaurant-map.js")
-    //- hr
-    //- h5 tag restaurant 
-    //-     form(action=`/restaurants/${restaurant.restaurant._id}/tag`, method="post")
-    //-         label tags
-    //-         div: input(id="restaurant_field" type="text" name="tags")
 
-    //-         input(type="submit", value="tag restaurant")
+    tagging-form(v-bind:restaurant="resto.restaurant")
+    hr
+    restaurant-map(v-bind:restaurant="resto.restaurant.location")
+    hr
+    
 
 </template>
+
+<style scoped>
+
+p.rest-id {
+    font-size: 12px;
+    font-style: italic
+};
+</style>
