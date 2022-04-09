@@ -29,7 +29,7 @@
     "flatted": "^2.0.1",
     "http-errors": "~1.6.3",
     "ics": "^2.18.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "mongoose": "^5.7.10",
     "mongoose-autopopulate": "^0.9.1",
     "morgan": "~1.9.1",
